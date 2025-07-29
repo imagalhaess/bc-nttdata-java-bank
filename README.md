@@ -75,4 +75,4 @@ Ele foi adaptado e expandido por mim para fins de estudo aprofundado e aplicaç�
 
 ## Autoria
 
-Desenvolvido por [Isabela Magalhães](https://github.com/imagalhaess) como parte do seu processo de transição para a área de tecnologia, com foco em desenvolvimento backend e clean code ❤️
+Desenvolvido por [Isabela M.](https://github.com/imagalhaess) como parte do seu processo de transição para a área de tecnologia, com foco em desenvolvimento backend e clean code ❤️
