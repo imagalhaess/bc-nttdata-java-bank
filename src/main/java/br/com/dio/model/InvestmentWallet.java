@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.stream.Stream;
 
-import static br.com.dio.model.BankService.INVESTIMENT;
+import static br.com.dio.model.BankService.INVESTMENT;
 
 @ToString
 @Getter
@@ -18,7 +18,7 @@ public class InvestmentWallet extends Wallet{
     private final AccountWallet account;
 
     public InvestmentWallet(final Investment investment, final AccountWallet account, final long amount) {
-        super(INVESTIMENT);
+        super(INVESTMENT);
         this.investment = investment;
         this.account = account;
         addMoney(account.reduceMoney(amount), getService(), "investimento");

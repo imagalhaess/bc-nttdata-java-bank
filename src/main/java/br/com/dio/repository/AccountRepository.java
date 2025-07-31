@@ -2,9 +2,13 @@ package br.com.dio.repository;
 import br.com.dio.expection.AccountNotFoundException;
 import br.com.dio.expection.PixInUseException;
 import br.com.dio.model.AccountWallet;
-
+import br.com.dio.model.MoneyAudity;
+import java.util.TreeMap;
 import java.nio.channels.AcceptPendingException;
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static br.com.dio.repository.CommonsRepository.checkFundsForTransaction;
 
@@ -57,4 +61,15 @@ public class AccountRepository {
         return this.accounts;
     }
 
+    public Map<OffsetDateTime, List<MoneyAudity>> getHistory(String pix) {
+        var account = findByPix(pix);
+
+        return account.getMoney().stream()
+                .flatMap(m -> m.getHistory().stream())
+                .collect(Collectors.groupingBy(
+                        MoneyAudity::createdAt,
+                        TreeMap::new,
+                        Collectors.toList()
+                ));
+    }
 }
