@@ -4,6 +4,7 @@ import br.com.dio.expection.NoFundsEnoughException;
 import br.com.dio.model.AccountWallet;
 import br.com.dio.model.Money;
 import br.com.dio.model.MoneyAudity;
+import br.com.dio.model.Wallet;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -19,9 +20,9 @@ import static lombok.AccessLevel.PRIVATE;
 
 public final class CommonsRepository {
 
-    public static void checkFundsForTransaction(final AccountWallet source, final long amount) {
+    public static void checkFundsForTransaction(final Wallet source, final long amount) {
         if (source.getFunds() < amount) {
-            throw new NoFundsEnoughException("Sua conta não tem dinheiro o suficiente para realizar essa transação.")
+            throw new NoFundsEnoughException("Sua conta não tem dinheiro o suficiente para realizar essa transação.");
         }
     }
 
