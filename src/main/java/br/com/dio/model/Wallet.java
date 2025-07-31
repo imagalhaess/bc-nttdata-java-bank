@@ -7,9 +7,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@ToString
 @Getter
 public abstract class Wallet {
 
@@ -22,10 +22,9 @@ public abstract class Wallet {
         this.money = new ArrayList<>();
     }
 
-    protected List<Money> generateMoney(final long amount, final String description){
+    protected List<Money> generateMoney(final long amount, final String description) {
         var history = new MoneyAudity(UUID.randomUUID(), service, description, OffsetDateTime.now());
-        return Stream.generate(() -> new Money(history)).limit(amount).toList();
-
+        return Stream.generate(() -> new Money(history)).limit(amount).collect(Collectors.toList());
     }
 
     public long getFunds(){
@@ -49,6 +48,9 @@ public abstract class Wallet {
     public List<MoneyAudity> getFinancialTransactions(){
         return money.stream().flatMap(m -> m.getHistory().stream()).toList();
     }
+
+    @Override
+    public String toString() {
+        return String.format("serviço = %s, valor = R$%d", service, getFunds());
+    }
 }
-
-

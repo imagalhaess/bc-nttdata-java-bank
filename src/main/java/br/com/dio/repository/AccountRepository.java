@@ -3,6 +3,9 @@ import br.com.dio.expection.AccountNotFoundException;
 import br.com.dio.expection.PixInUseException;
 import br.com.dio.model.AccountWallet;
 import br.com.dio.model.MoneyAudity;
+
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.TreeMap;
 import java.nio.channels.AcceptPendingException;
 import java.time.OffsetDateTime;
@@ -11,18 +14,21 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static br.com.dio.repository.CommonsRepository.checkFundsForTransaction;
+import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class AccountRepository {
 
-    private List<AccountWallet> accounts;
+    private final List<AccountWallet> accounts = new ArrayList<>();
 
     public AccountWallet create(final List<String> pix, final long initialFunds){
-        var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
-        for (var p : pix){
-            if (pixInUse.contains(p)){
-                throw new PixInUseException("O pix '" + p + "' já está em uso.");
-            }
+        if (!accounts.isEmpty()) {
+            var pixInUse = accounts.stream().flatMap(a -> a.getPix().stream()).toList();
+            for (var p : pix) {
+                if (pixInUse.contains(p)) {
+                    throw new PixInUseException("O pix '" + p + "' já está em uso.");
+                }
 
+            }
         }
         var newAccount = new AccountWallet(initialFunds, pix);
         accounts.add(newAccount);
@@ -67,7 +73,7 @@ public class AccountRepository {
         return account.getMoney().stream()
                 .flatMap(m -> m.getHistory().stream())
                 .collect(Collectors.groupingBy(
-                        MoneyAudity::createdAt,
+                        m -> m.createdAt().truncatedTo(ChronoUnit.SECONDS),
                         TreeMap::new,
                         Collectors.toList()
                 ));
